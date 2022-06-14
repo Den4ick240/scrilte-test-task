@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Junior Light Test Task</title>
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <script type="text/x-template" id="modal_template">
+        <div class="modal">
+            <form class="modal__container">
+                <button class="form__close-button btn-close" @click="() => $emit('close')"
+                        aria-label="Close alert" type="button" data-close><span class="form__close-cross"></span>
+                </button>
+                <h1 class="formTitle">Title form</h1>
+
+                <text-field class="form__row" id="firstName" label="First Name" type="text"
+                            :required="true"></text-field>
+                <text-field class="form__row" id="lastName" label="Last Name" type="text"
+                            required="true"></text-field>
+                <text-field class="form__row" id="email" label="user@gmail.com" type="email"
+                            required="true"></text-field>
+
+                <div class="form__row">
+                    <label for="productSelector" class="form__text">Product type *</label>
+                    <!--                    <select class="form__selector float-right" id="productSelector"-->
+                    <!--                            v-model="selectedProductOption" required>-->
+                    <!--                        <option-->
+                    <!--                                v-for="option in productOptions"-->
+                    <!--                                v-bind:value="option"-->
+                    <!--                                v-bind:key="option.name">-->
+                    <!--                            {{ `${option.name} $${option.cost}` }}-->
+                    <!--                        </option>-->
+                    <!--                    </select>-->
+                    <custom-select
+                            :options="productOptions"
+                            :optionToString="(option) =>{return `${option.name} $${option.cost}`} "
+                    ></custom-select>
+                </div>
+                <div class="form__row"
+                     v-for="feature in selectedProductOption.additionalFeatures"
+                >
+                    <label class="form__text">{{ `${feature.name} for $${feature.cost}` }}</label>
+                    <label class="form__toggle-switch">
+                        <input type="checkbox"
+                               v-model="selectedProductOption.selectedFeatures"
+                               :value="feature">
+                        <span class="form__toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="form__text-field-container">
+                    <textarea class="form__textarea form__text-field-input"
+                              v-model="comment"
+                              id="commentTextArea"
+                              placeholder=" "
+                              rows="4"
+                    ></textarea>
+                    <label class="form__text-field-label" for="commentTextArea">Type your comment</label>
+                </div>
+                <div class="form__row">
+                    <label class="form__text">Total price</label>
+                    <div class="form__text">{{ `$${totalPrice}` }}</div>
+                </div>
+                <div class="center">
+                    <button class="form__submit-button">Send form</button>
+                </div>
+            </form>
+        </div>
+    </script>
+    <script type="text/x-template" id="text_field">
+        <div class="form__text-field-container">
+            <input class="form__text-field-input" :type="type" :id="id" placeholder=" " :required="required"/>
+            <label class="form__text-field-label" :for="id">{{ label + (this.required ? ' *' : 'f') }}</label>
+        </div>
+    </script>
+    <script type="text/x-template" id="custom_select">
+        <div class="form__custom-select" :tabindex="tabindex" @blur="() => open = false">
+            <div class="form__custom-select-selected" :class="{ open: open }" @click="() => open = !open">
+                {{ optionToString(selected) }}
+            </div>
+            <div class="form__custom-select-items" :class="{ selectHide: !open }">
+                <div
+                        v-for="(option, i) of options"
+                        :key="i"
+                        @click="
+                            selected=option;
+                            open = false;
+                            emitSelected();"
+                >
+                    {{ optionToString(option) }}
+                </div>
+            </div>
+        </div>
+    </script>
+</head>
+<body>
+
+<div id="app">
+    <button @click="() => showModal = true">Show modal</button>
+    <modal v-if="showModal" @close="() => showModal = false"></modal>
+</div>
+
+<script src="https://unpkg.com/vue@3.0.5"></script>
+<script src="app.js"></script>
+
+
+</body>
+</html>
