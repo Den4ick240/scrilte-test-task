@@ -12,7 +12,7 @@
                 <button class="form__close-button btn-close" @click="() => $emit('close')"
                         aria-label="Close alert" type="button" data-close><span class="form__close-cross"></span>
                 </button>
-                <h1 class="formTitle">Title form</h1>
+                <h1>Title form</h1>
 
                 <text-field class="form__row" id="firstName" label="First Name" type="text"
                             :required="true"></text-field>
@@ -23,18 +23,10 @@
 
                 <div class="form__row">
                     <label for="productSelector" class="form__text">Product type *</label>
-                    <!--                    <select class="form__selector float-right" id="productSelector"-->
-                    <!--                            v-model="selectedProductOption" required>-->
-                    <!--                        <option-->
-                    <!--                                v-for="option in productOptions"-->
-                    <!--                                v-bind:value="option"-->
-                    <!--                                v-bind:key="option.name">-->
-                    <!--                            {{ `${option.name} $${option.cost}` }}-->
-                    <!--                        </option>-->
-                    <!--                    </select>-->
                     <custom-select
                             :options="productOptions"
                             :optionToString="(option) =>{return `${option.name} $${option.cost}`} "
+                            :default="Select product type"
                     ></custom-select>
                 </div>
                 <div class="form__row"
@@ -77,6 +69,7 @@
         <div class="form__custom-select" :tabindex="tabindex" @blur="() => open = false">
             <div class="form__custom-select-selected" :class="{ open: open }" @click="() => open = !open">
                 {{ optionToString(selected) }}
+                <i :class="`arrow ${open ? 'up' : 'down'}`"></i>
             </div>
             <div class="form__custom-select-items" :class="{ selectHide: !open }">
                 <div
