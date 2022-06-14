@@ -68,11 +68,12 @@ app.component('modal', {
                 : null
         },
         submitForm(e) {
-            e.preventDefault()
             this.validateFirstName()
             this.validateLastName()
             this.validateEmail()
             this.validateProductOption()
+            if (this.productOptionError || this.emailError || this.firstNameError || this.lastNameError)
+                e.preventDefault()
         }
     },
     watch: {

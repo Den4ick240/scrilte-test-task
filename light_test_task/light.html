@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <script type="text/x-template" id="modal_template">
         <div class="modal">
-            <form class="modal__container">
+            <form class="modal__container" method="post" action="https://jkorpela.fi/cgi-bin/echo.cgi">
                 <button class="form__close-button btn-close" @click="() => $emit('close')"
                         aria-label="Close alert" type="button" data-close><span class="form__close-cross"></span>
                 </button>
@@ -39,6 +39,7 @@
                     <label class="form__toggle-switch">
                         <input type="checkbox"
                                v-model="selectedFeatures"
+                               :name="feature"
                                :value="feature">
                         <span class="form__toggle-slider"></span>
                     </label>
@@ -64,7 +65,7 @@
     </script>
     <script type="text/x-template" id="text_field">
         <div class="form__text-field-container">
-            <input class="form__text-field-input" v-model="textModel" :type="type" :id="id" placeholder=" " :required="required"/>
+            <input class="form__text-field-input" v-model="textModel" :type="type" :name="id" :id="id" placeholder=" " :required="required"/>
             <label class="form__text-field-label" :for="id">{{ label + (this.required ? ' *' : 'f') }}</label>
             <p class="form__text-field-input-error">{{error}}</p>
         </div>
