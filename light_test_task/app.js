@@ -3,44 +3,107 @@ const app = Vue.createApp({
         return {
             showModal: false,
         }
-    }
+    },
 })
 app.component('modal', {
     template: '#modal_template',
     data() {
-        let additionalFeatures = JSON.stringify([
+        let additionalFeatures = [
             {name: 'Additional feature', cost: 100},
             {name: 'Additional feature', cost: 200},
-        ])
-        let productOptions = [
-            {name: 'Product', cost: 50, additionalFeatures: JSON.parse(additionalFeatures)},
-            {name: 'Product', cost: 100, additionalFeatures: JSON.parse(additionalFeatures)},
-            {name: 'Product', cost: 300, additionalFeatures: JSON.parse(additionalFeatures)}
         ]
-        for (let productOption of productOptions)
-            productOption.selectedFeatures = []
+        let productOptions = [
+            {name: 'Product', cost: 50},
+            {name: 'Product', cost: 100},
+            {name: 'Product', cost: 300}
+        ]
         return {
             productOptions,
-            selectedProductOption: productOptions[0],
+            selectedProductOption: null,
             comment: "",
+            additionalFeatures,
+            selectedFeatures: [],
+            firstName: '',
+            lastName: '',
+            email: '',
+            firstNameError: null,
+            lastNameError: null,
+            emailError: null,
+            productOptionError: null,
         }
     },
     computed: {
         totalPrice() {
             const product = this.selectedProductOption
-            let cost = product.cost
-            if (product.selectedFeatures.length)
-                cost += product.selectedFeatures
+            let cost = product ? product.cost : 0
+            if (this.selectedFeatures.length)
+                cost += this.selectedFeatures
                     .map(feature => feature.cost)
                     .reduce((a, b) => a + b)
             return cost
         }
     },
+    methods: {
+        validateFirstName() {
+            this.firstNameError = !this.firstName
+                ? 'Please fill in first name.'
+                : null
+        },
+        validateLastName() {
+            this.lastNameError = !this.lastName
+                ? 'Please fill in last name.'
+                : null
+        },
+        validateEmail() {
+            const emailMatchRegExr = '[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?'
+            this.emailError = !this.email
+                ? 'Please fill in email.'
+                : !this.email.match(emailMatchRegExr)
+                    ? 'Please enter a valid email address.'
+                    : null
+        },
+        validateProductOption() {
+            this.productOptionError = !this.selectedProductOption
+                ? 'Please select product type.'
+                : null
+        },
+        submitForm(e) {
+            e.preventDefault()
+            this.validateFirstName()
+            this.validateLastName()
+            this.validateEmail()
+            this.validateProductOption()
+        }
+    },
+    watch: {
+        firstName(val) {
+            this.validateFirstName()
+        },
+        lastName() {
+            this.validateLastName()
+        },
+        email() {
+            this.validateEmail()
+        },
+        selectedProductOption() {
+            this.validateProductOption()
+        },
+    }
 })
 
 app.component('text-field', {
     template: '#text_field',
-    props: ['id', 'label', 'model', 'type', 'required']
+    props: ['id', 'label', 'type', 'required', 'error', 'modelValue'],
+    computed: {
+        textModel: {
+            get() {
+                return this.modelValue
+            },
+            set(val) {
+                this.$emit('update:modelValue', val)
+            }
+        }
+    }
 })
 
 app.component('custom-select', {
@@ -50,14 +113,11 @@ app.component('custom-select', {
             options: {type: Array, required: true},
             default: {type: String, default: null},
             tabindex: {type: Number, default: 0},
+            error: {type: String, default: null}
         },
         data() {
             return {
-                selected: this.default
-                    ? this.default
-                    : this.options.length > 0
-                        ? this.options[0]
-                        : null,
+                selected: this.default,
                 open: false,
             }
         },

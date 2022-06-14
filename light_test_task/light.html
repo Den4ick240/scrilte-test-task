@@ -14,28 +14,31 @@
                 </button>
                 <h1>Title form</h1>
 
-                <text-field class="form__row" id="firstName" label="First Name" type="text"
-                            :required="true"></text-field>
-                <text-field class="form__row" id="lastName" label="Last Name" type="text"
-                            required="true"></text-field>
-                <text-field class="form__row" id="email" label="user@gmail.com" type="email"
-                            required="true"></text-field>
+                <text-field id="firstName" label="First Name" type="text"
+                            :required="true" :error="firstNameError" v-model="firstName"></text-field>
+                <text-field id="lastName" label="Last Name" type="text"
+                            :required="true" :error="lastNameError" v-model="lastName"></text-field>
+                <text-field id="email" label="user@gmail.com" type="email"
+                            :required="true" :error="emailError" v-model="email"></text-field>
 
                 <div class="form__row">
                     <label for="productSelector" class="form__text">Product type *</label>
                     <custom-select
                             :options="productOptions"
-                            :optionToString="(option) =>{return `${option.name} $${option.cost}`} "
-                            :default="Select product type"
+                            :optionToString="option => option
+                            ? `${option.name} $${option.cost}`
+                            :'Select product type'"
+                            @input="option => selectedProductOption = option"
+                            :error="productOptionError"
                     ></custom-select>
                 </div>
                 <div class="form__row"
-                     v-for="feature in selectedProductOption.additionalFeatures"
+                     v-for="feature in additionalFeatures"
                 >
                     <label class="form__text">{{ `${feature.name} for $${feature.cost}` }}</label>
                     <label class="form__toggle-switch">
                         <input type="checkbox"
-                               v-model="selectedProductOption.selectedFeatures"
+                               v-model="selectedFeatures"
                                :value="feature">
                         <span class="form__toggle-slider"></span>
                     </label>
@@ -54,15 +57,16 @@
                     <div class="form__text">{{ `$${totalPrice}` }}</div>
                 </div>
                 <div class="center">
-                    <button class="form__submit-button">Send form</button>
+                    <button class="form__submit-button" type="submit" @click="e => submitForm(e)">Send form</button>
                 </div>
             </form>
         </div>
     </script>
     <script type="text/x-template" id="text_field">
         <div class="form__text-field-container">
-            <input class="form__text-field-input" :type="type" :id="id" placeholder=" " :required="required"/>
+            <input class="form__text-field-input" v-model="textModel" :type="type" :id="id" placeholder=" " :required="required"/>
             <label class="form__text-field-label" :for="id">{{ label + (this.required ? ' *' : 'f') }}</label>
+            <p class="form__text-field-input-error">{{error}}</p>
         </div>
     </script>
     <script type="text/x-template" id="custom_select">
@@ -83,6 +87,7 @@
                     {{ optionToString(option) }}
                 </div>
             </div>
+            <p class="form__text-field-input-error">{{error}}</p>
         </div>
     </script>
 </head>
