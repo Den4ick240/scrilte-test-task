@@ -1,10 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css"/>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
-$END$
+
+<div id="app" class="container">
+    <button
+            @click="onGetUsersClicked"
+            :disabled="!isButtonEnabled"
+    >Get Users
+    </button>
+    <div class="items">
+        <div v-if="usersExceptDelphine.length > 0" v-for="user in usersExceptDelphine" class="item">
+            <label class="id">{{user.id}}</label>
+            <label class="name">{{user.name}}</label>
+            <label class="email">{{user.email}}</label>
+            <label class="phone">{{user.phone}}</label>
+            <button @click="() => like(user)"><i class="fas fa-thumbs-up"></i></button>
+        </div>
+        <div v-else class="item">
+            <label> Press "Get Users" to load user list</label>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/vue@next"></script>
+<script src="app.js"></script>
+
 </body>
 </html>

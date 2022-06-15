@@ -1,0 +1,120 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    /*justify-content: center;*/
+    flex-direction: column;
+    align-items: center;
+    /*align-content: center;*/
+}
+
+button {
+    color: ghostwhite;
+    padding: .5rem 2rem;
+    width: max-content;
+    margin: 2rem;
+    font-size: 14px;
+    font-weight: bold;
+    background: cornflowerblue;
+    border: 1px solid steelblue;
+    border-radius: 4px;
+}
+
+button:hover {
+    box-shadow: 0 0 2px 2px lightsteelblue;
+}
+
+button:active {
+    background: powderblue;
+}
+
+button:disabled {
+    background: dimgray;
+    border: gray;
+    color: gainsboro;
+    box-shadow: 0 0 2px 2px gray;
+}
+
+.items {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    flex-direction: column;
+}
+
+.item {
+    align-self: stretch;
+    background: gray;
+    margin: 1rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.item label {
+    margin: 1rem 0;
+    /*flex-basis: 0;*/
+    /*flex-grow: 1;*/
+    text-align: center;
+    width: 100%;
+}
+
+.item .name,
+.item .email,
+.item .phone {
+    flex-basis: 0;
+    flex-grow: 1;
+    text-align: left;
+}
+}
+
+.item .phone {
+    font-weight: normal;
+    margin: 1rem 0;
+}
+
+.item .phone:before {
+    content: 'phone: ';
+    margin-right: .25rem;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.item > button {
+    padding: .5rem .75rem;
+    text-align: right;
+    margin: 1rem 1rem 1rem 1rem;
+}
+
+.item .id{
+    border-right: 1px solid #555555;
+    padding: .85rem 1rem;
+    margin-right: 1rem;
+    width: 3.5rem;
+    text-align: center;
+}
+
+.item .name {
+}
+
+.item .email {
+    font-weight: normal;
+    text-decoration: underline;
+    margin-right: 1rem;
+}
+.item .email:before {
+    content: 'email: ';
+    margin-right: .25rem;
+    display: inline-block;
+    text-decoration: none;
+}
+
+
+
