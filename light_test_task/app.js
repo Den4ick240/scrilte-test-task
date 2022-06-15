@@ -1,12 +1,24 @@
 const app = Vue.createApp({
+    mounted() {
+        this.showModal()
+    },
     data() {
         return {
-            showModal: false,
+            isModalOpen: true,
         }
     },
+    methods: {
+        showModal() {
+            this.isModalOpen = true
+        },
+        closeModal() {
+            this.isModalOpen = false
+        }
+    }
 })
 app.component('modal', {
     template: '#modal_template',
+    props: ['isModalOpen'],
     data() {
         let additionalFeatures = [
             {name: 'Additional feature', cost: 100},
@@ -20,12 +32,12 @@ app.component('modal', {
         return {
             productOptions,
             selectedProductOption: null,
-            comment: "",
             additionalFeatures,
             selectedFeatures: [],
             firstName: '',
             lastName: '',
             email: '',
+            comment: '',
             firstNameError: null,
             lastNameError: null,
             emailError: null,
@@ -74,10 +86,20 @@ app.component('modal', {
             this.validateProductOption()
             if (this.productOptionError || this.emailError || this.firstNameError || this.lastNameError)
                 e.preventDefault()
+        },
+        nextTickFocus() {
+            if (this.isModalOpen)
+                this.$nextTick(() =>
+                    this.$refs.modal.focus()
+                )
+        },
+        onEscapeKeyUp(event) {
+            if (event.which === 27)
+                this.$emit('close')
         }
     },
     watch: {
-        firstName(val) {
+        firstName() {
             this.validateFirstName()
         },
         lastName() {
@@ -89,7 +111,16 @@ app.component('modal', {
         selectedProductOption() {
             this.validateProductOption()
         },
-    }
+        isModalOpen: {
+            immediate: true,
+            handler(val) {
+                if (val)
+                    window.addEventListener("keyup", this.onEscapeKeyUp)
+                else
+                    window.removeEventListener("keyup", this.onEscapeKeyUp)
+            }
+        }
+    },
 })
 
 app.component('text-field', {
@@ -114,7 +145,8 @@ app.component('custom-select', {
             options: {type: Array, required: true},
             default: {type: String, default: null},
             tabindex: {type: Number, default: 0},
-            error: {type: String, default: null}
+            error: {type: String, default: null},
+            name: {type: String, default: null},
         },
         data() {
             return {

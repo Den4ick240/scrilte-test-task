@@ -75,7 +75,7 @@ input[type="text"] {
 
 .modal__container {
     background-color: #ffffff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.2);
     position: fixed;
     transform: translate(-50%, -50%);
     width: 580px;
@@ -130,19 +130,20 @@ input[type="text"] {
     outline: none;
 }
 
-.form__custom-select .form__custom-select-selected {
+.form__custom-select-selected {
     border-radius: 0.25rem;
     border: 1px solid #bdbdbd;
     box-sizing: border-box;
     width: 20rem;
     padding: 0.75rem 1rem 0.5rem 1rem;
     cursor: pointer;
+    outline: none;
     user-select: none;
 }
 
 .form__custom-select .form__custom-select-selected.open {
-    border: 1px solid #ad8225;
-    border-radius: 6px 6px 0px 0px;
+    border: 1px solid #91c2eb;
+    box-shadow: 0 0 0 0.2rem rgba(145, 194, 235, 0.25);
 }
 
 .form__custom-select .form__custom-select-selected:after {
@@ -156,28 +157,27 @@ input[type="text"] {
 }
 
 .form__custom-select .form__custom-select-items {
-    color: #fff;
-    border-radius: 0px 0px 6px 6px;
     overflow: hidden;
-    border-right: 1px solid #ad8225;
-    border-left: 1px solid #ad8225;
-    border-bottom: 1px solid #ad8225;
+    border-right: 1px solid;
+    border-left: 1px solid;
+    border-bottom: 1px solid;
+    border-color: #bdbdbd;
     position: absolute;
-    background-color: #0a0a0a;
+    background-color: white;
     left: 0;
     right: 0;
     z-index: 1;
 }
 
 .form__custom-select .form__custom-select-items div {
-    color: #fff;
-    padding-left: 1em;
     cursor: pointer;
     user-select: none;
+    border-top: 1px solid #bdbdbd;
+    padding: 0.75rem 1rem;
 }
 
 .form__custom-select .form__custom-select-items div:hover {
-    background-color: #ad8225;
+    background-color: #ebfdff;
 }
 
 .selectHide {
@@ -301,14 +301,8 @@ input[type="email"].form__text-field-input {
     top: -4px
 }
 
-.form__text-field-container textarea.form__text-field-input:focus ~ .form__text-field-label,
-.form__text-field-container textarea.form__text-field-input:not(:placeholder-shown) ~ .form__text-field-label {
-    transform: scale(.72) translateY(-.2rem) translateX(.4rem);
-}
-
 .form__text-field-container .form__text-field-label {
     position: absolute;
-    /*top: -4px;*/
     top: 2px;
     left: 0;
     height: 100%;
@@ -319,10 +313,18 @@ input[type="email"].form__text-field-input {
     transition: opacity .15s ease-in-out, transform .15s ease-in-out;
 }
 
+.form__text-field-input.error:not(:focus) ~ .form__text-field-label {
+    color: red;
+}
+
 .form__text-field-container .form__text-field-input:focus ~ .form__text-field-label,
 .form__text-field-container .form__text-field-input:not(:placeholder-shown) ~ .form__text-field-label {
-    opacity: .65;
     transform: scale(.72) translateY(-.6rem) translateX(.4rem);
+}
+
+.form__text-field-container textarea.form__text-field-input:focus ~ .form__text-field-label,
+.form__text-field-container textarea.form__text-field-input:not(:placeholder-shown) ~ .form__text-field-label {
+    transform: scale(.72) translateY(-.2rem) translateX(.4rem);
 }
 
 .form__text-field-input-error {
@@ -331,6 +333,10 @@ input[type="email"].form__text-field-input {
     width: 100%;
     display: block;
     margin-top: 8px;
+}
+
+.form__text-field-input:focus ~ .form__text-field-input-error {
+    display: none;
 }
 
 .form__submit-button {
@@ -347,4 +353,11 @@ input[type="email"].form__text-field-input {
 .form__submit-button:hover {
     border: 1px solid steelblue;
     box-shadow: 0 0 0 0.2rem rgba(65, 154, 218, 0.25);
+}
+
+.form__text-field-input:not(:focus).error,
+.form__custom-select .form__custom-select-selected:not(.open).error {
+    border: 1px solid red;
+    background: #fde9ec;
+    color: red;
 }
