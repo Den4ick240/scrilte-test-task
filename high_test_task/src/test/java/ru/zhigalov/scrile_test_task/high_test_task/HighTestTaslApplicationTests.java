@@ -1,4 +1,4 @@
-package ru.zhigalov.scrile_test_task.high_test_tasl;
+package ru.zhigalov.scrile_test_task.high_test_task;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
