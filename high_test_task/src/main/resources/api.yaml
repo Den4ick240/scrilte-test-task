@@ -1,20 +1,25 @@
 swagger: "2.0"
-
-
 info:
-  version: 0.0.1
+  description: Api developed by Denis Zhigalov as a high test task for Junior FullStack developer job in Scrile
+  version: 1.0.0
   title: High Test Task
-  description: Api developed as a high test task for Junior FullStack developer job in Scrile
-
+  contact:
+    email: denzhigalov@gmail.com
+host: "localhost"
+basePath: /api
 tags:
-  - name: "High_test_task"
-
+  - name: image
+    description: image store
+  - name: user
+    description: Operations about user
+schemes:
+  - https
+  - http
 paths:
-
-  /api/upload:
+  /image:
     post:
       tags:
-        - Pet
+        - image
       summary: Upload picture to server.
       operationId: uploadPicture
       description: Receives a picture, saves it to the server catalog and returns url for the saved picture.
@@ -24,23 +29,202 @@ paths:
       parameters:
         - in: formData
           name: image
-          description: image to upload to server.
+          description: Image to upload to server.
           required: true
           type: file
       responses:
         "200":
-          description: Picture is successfully received.
+          description: Image is successfully uploaded.
           schema:
             type: string
+  /image/{imageId}:
+    get:
+      tags:
+        - image
+      summary: Get image.
+      description: Get image, previously uploaded to server.
+      parameters:
+        - in: path
+          name: imageId
+          description: Id of the image.
+          required: true
+          type: integer
+          format: int64
+      produces:
+        - multipart/form-data
+      responses:
+        "200":
+          description: Successful operation.
+          schema:
+            type: file
+        "404":
+          description: Image not found.
+
+
+  /user:
+    post:
+      tags:
+        - user
+      summary: "Create user"
+      description: "Saves user data to server database and returns new unique id of the saved user."
+      operationId: "createUser"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "New user data"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        "200":
+          schema:
+            type: integer
+          description: "Unique id of the saved user."
+  /user/{userId}:
+    get:
+      tags:
+        - "user"
+      summary: "Get user by id."
+      description: ""
+      operationId: "getUserById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "userId"
+          in: "path"
+          description: "The unique user id."
+          required: true
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+        "404":
+          description: "User not found"
+  /user/{userId}/status:
+    post:
+      tags:
+        - "user"
+      summary: "Change user status"
+      description: ""
+      operationId: "setStatus"
+      consumes:
+        - "application/json"
+      parameters:
+        - name: "userId"
+          in: "path"
+          description: "The unique id of the user, whose status will be changed."
+          required: true
+          type: integer
+          format: int64
+        - name: "body"
+          in: "body"
+          description: "Body contains user new user status."
+          required: true
+          schema:
+            $ref: "#/definitions/Status"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ChangeStatusResponse"
+        "404":
+          description: "User not found"
+
+definitions:
+  User:
+    type: "object"
+    properties:
+      id:
+        type: integer
+        format: int64
+        readOnly: true
+      username:
+        type: string
+      email:
+        type: string
+      userStatus:
+        $ref: "#/definitions/Status"
+        description: "User status online / offline"
+    xml:
+      name: "User"
+  ChangeStatusResponse:
+    type: "object"
+    properties:
+      id:
+        type: integer
+        format: int64
+      oldStatus:
+        $ref: "#/definitions/Status"
+      newStatus:
+        $ref: "#/definitions/Status"
+        example: online
+  #  ApiResponse:
+  #    type: "object"
+  #    properties:
+  #      code:
+  #        type: integer
+  #        format: "int32"
+  #      type:
+  #        type: string
+  #      message:
+  #        type: string
+  Status:
+    type: string
+    enum: [ offline, online ]
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
+
+#swagger: "2.0"
 #
-#  /api/user:
+#
+#info:
+#  version: 0.0.1
+#  title: High Test Task
+#  description: Api developed as a high test task for Junior FullStack developer job in Scrile
+#
+#tags:
+#  - name: "High_test_task"
+#
+#paths:
+#
+#  /api/upload:
 #    post:
-#      summary: Create new user.
-#      description: Receives user data, saves it to the server database and returns the unique id of the created user.
+#      tags:
+#        - Pet
+#      summary: Upload picture to server.
+#      operationId: uploadPicture
+#      description: Receives a picture, saves it to the server catalog and returns url for the saved picture.
 #
-#
+#      consumes:
+#        - multipart/form-data
+#      parameters:
+#        - in: formData
+#          name: image
+#          description: image to upload to server.
+#          required: true
+#          type: file
 #      responses:
 #        "200":
-#          description: User successfully created.
+#          description: Picture is successfully received.
 #          schema:
-#            type: integer
+#            type: string
+##
+##  /api/user:
+##    post:
+##      summary: Create new user.
+##      description: Receives user data, saves it to the server database and returns the unique id of the created user.
+##
+##
+##      responses:
+##        "200":
+##          description: User successfully created.
+##          schema:
+##            type: integer
