@@ -5,8 +5,7 @@ info:
   title: High Test Task
   contact:
     email: denzhigalov@gmail.com
-host: "localhost"
-basePath: /api
+host: "localhost:8080"
 tags:
   - name: image
     description: image store
@@ -37,6 +36,8 @@ paths:
           description: Image is successfully uploaded.
           schema:
             type: string
+        "500":
+          description: Image could not be uploaded.
   /image/{imageId}:
     get:
       tags:
@@ -48,10 +49,9 @@ paths:
           name: imageId
           description: Id of the image.
           required: true
-          type: integer
-          format: int64
+          type: string
       produces:
-        - multipart/form-data
+        - image/jpeg
       responses:
         "200":
           description: Successful operation.
@@ -65,15 +65,17 @@ paths:
     post:
       tags:
         - user
-      summary: "Create user"
-      description: "Saves user data to server database and returns new unique id of the saved user."
-      operationId: "createUser"
+      summary: Create user
+      description: Saves user data to server database and returns new unique id of the saved user.
+      operationId: createUser
+      consumes:
+        - application/json
       produces:
-        - "application/json"
+        - application/json
       parameters:
-        - in: "body"
-          name: "body"
-          description: "New user data"
+        - in: body
+          name: body
+          description: New user data
           required: true
           schema:
             $ref: "#/definitions/User"
@@ -81,65 +83,65 @@ paths:
         "200":
           schema:
             type: integer
-          description: "Unique id of the saved user."
+          description: Unique id of the saved user.
   /user/{userId}:
     get:
       tags:
-        - "user"
-      summary: "Get user by id."
+        - user
+      summary: Get user by id.
       description: ""
-      operationId: "getUserById"
+      operationId: getUserById
       produces:
-        - "application/json"
+        - application/json
       parameters:
-        - name: "userId"
-          in: "path"
-          description: "The unique user id."
+        - name: userId
+          in: path
+          description: The unique user id.
           required: true
           type: integer
           format: int64
       responses:
         "200":
-          description: "successful operation"
+          description: successful operation
           schema:
             $ref: "#/definitions/User"
         "404":
-          description: "User not found"
+          description: User not found
   /user/{userId}/status:
     post:
       tags:
-        - "user"
-      summary: "Change user status"
+        - user
+      summary: Change user status
       description: ""
-      operationId: "setStatus"
+      operationId: setStatus
       consumes:
-        - "application/json"
+        - application/json
       parameters:
-        - name: "userId"
-          in: "path"
-          description: "The unique id of the user, whose status will be changed."
+        - name: userId
+          in: path
+          description: The unique id of the user, whose status will be changed.
           required: true
           type: integer
           format: int64
-        - name: "body"
-          in: "body"
-          description: "Body contains user new user status."
+        - name: body
+          in: body
+          description: Body contains user new user status.
           required: true
           schema:
             $ref: "#/definitions/Status"
       produces:
-        - "application/json"
+        - application/json
       responses:
         "200":
-          description: "successful operation"
+          description: successful operation
           schema:
             $ref: "#/definitions/ChangeStatusResponse"
         "404":
-          description: "User not found"
+          description: User not found
 
 definitions:
   User:
-    type: "object"
+    type: object
     properties:
       id:
         type: integer
@@ -153,11 +155,11 @@ definitions:
         type: string
       userStatus:
         $ref: "#/definitions/Status"
-        description: "User status online / offline"
+        description: User status online / offline
     xml:
-      name: "User"
+      name: User
   ChangeStatusResponse:
-    type: "object"
+    type: object
     properties:
       id:
         type: integer
@@ -170,6 +172,3 @@ definitions:
   Status:
     type: string
     enum: [ offline, online ]
-externalDocs:
-  description: "Find out more about Swagger"
-  url: "http://swagger.io"

@@ -1,10 +1,16 @@
 package ru.zhigalov.scrile_test_task.high_test_task.model;
 
 import io.swagger.model.Status;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity(name = "Users")
 public class UserEntity {
 
     @Id
@@ -18,8 +24,7 @@ public class UserEntity {
     private String email;
 
     @Column
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Image image;
+    private String avatarUrl;
 
     @Column
     @Enumerated(EnumType.STRING)
