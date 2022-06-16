@@ -149,6 +149,8 @@ definitions:
         type: string
       email:
         type: string
+      avatarUrl:
+        type: string
       userStatus:
         $ref: "#/definitions/Status"
         description: "User status online / offline"
@@ -165,66 +167,9 @@ definitions:
       newStatus:
         $ref: "#/definitions/Status"
         example: online
-  #  ApiResponse:
-  #    type: "object"
-  #    properties:
-  #      code:
-  #        type: integer
-  #        format: "int32"
-  #      type:
-  #        type: string
-  #      message:
-  #        type: string
   Status:
     type: string
     enum: [ offline, online ]
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
-
-#swagger: "2.0"
-#
-#
-#info:
-#  version: 0.0.1
-#  title: High Test Task
-#  description: Api developed as a high test task for Junior FullStack developer job in Scrile
-#
-#tags:
-#  - name: "High_test_task"
-#
-#paths:
-#
-#  /api/upload:
-#    post:
-#      tags:
-#        - Pet
-#      summary: Upload picture to server.
-#      operationId: uploadPicture
-#      description: Receives a picture, saves it to the server catalog and returns url for the saved picture.
-#
-#      consumes:
-#        - multipart/form-data
-#      parameters:
-#        - in: formData
-#          name: image
-#          description: image to upload to server.
-#          required: true
-#          type: file
-#      responses:
-#        "200":
-#          description: Picture is successfully received.
-#          schema:
-#            type: string
-##
-##  /api/user:
-##    post:
-##      summary: Create new user.
-##      description: Receives user data, saves it to the server database and returns the unique id of the created user.
-##
-##
-##      responses:
-##        "200":
-##          description: User successfully created.
-##          schema:
-##            type: integer
