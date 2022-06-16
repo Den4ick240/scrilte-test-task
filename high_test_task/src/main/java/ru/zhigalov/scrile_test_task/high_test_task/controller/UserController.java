@@ -13,6 +13,8 @@ import ru.zhigalov.scrile_test_task.high_test_task.mapper.UserMappper;
 import ru.zhigalov.scrile_test_task.high_test_task.repository.UserRepository;
 import ru.zhigalov.scrile_test_task.high_test_task.service.UserService;
 
+import java.util.Optional;
+
 @Controller
 @RequiredArgsConstructor
 public class UserController implements UserApi {
@@ -40,21 +42,9 @@ public class UserController implements UserApi {
 
     @Override
     public ResponseEntity<ChangeStatusResponse> setStatus(ChangeStatusRequest body) {
-        var optionalUserEntity = userRepository.findById(body.getId());
-        if (optionalUserEntity.isEmpty())
-            return ResponseEntity.badRequest().build();
-
-        var userEntity = optionalUserEntity.get();
-
-        var oldStatus = userEntity.getUserStatus();
-        var newStatus = body.getNewStatus();
-
-        userEntity.setUserStatus(newStatus);
-
-        var response = new ChangeStatusResponse();
-        response.setId(body.getId());
-        response.setNewStatus(newStatus);
-        response.setOldStatus(oldStatus);
-        return ResponseEntity.ok(response);
+        return Optional
+                .of(userService.changeStatus(body))
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.badRequest().build());
     }
 }

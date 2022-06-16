@@ -4,6 +4,7 @@ import io.swagger.model.ChangeStatusRequest;
 import io.swagger.model.ChangeStatusResponse;
 import io.swagger.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.zhigalov.scrile_test_task.high_test_task.mapper.UserMappper;
 import ru.zhigalov.scrile_test_task.high_test_task.repository.UserRepository;
@@ -26,7 +27,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ChangeStatusResponse changeStatus(ChangeStatusRequest request) {
-        return null;
+        var optionalUserEntity =
+                repository.findById(request.getId());
+        if (optionalUserEntity.isEmpty())
+            return null;
+
+        var userEntity = optionalUserEntity.get();
+
+        var oldStatus = userEntity.getUserStatus();
+        var newStatus = request.getNewStatus();
+
+        userEntity.setUserStatus(newStatus);
+
+        return new ChangeStatusResponse()
+                .id(request.getId())
+                .newStatus(newStatus)
+                .oldStatus(oldStatus);
     }
 
     @Override
