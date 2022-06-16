@@ -57,7 +57,7 @@ paths:
           description: Successful operation.
           schema:
             type: file
-        "404":
+        "400":
           description: Image not found.
 
 
@@ -108,7 +108,7 @@ paths:
           description: successful operation
           schema:
             $ref: "#/definitions/User"
-        "404":
+        "400":
           description: User not found
   /user/status:
     post:
@@ -133,10 +133,8 @@ paths:
           description: successful operation
           schema:
             $ref: "#/definitions/ChangeStatusResponse"
-        "404":
-          description: User not found
         "400":
-          description: Bad userStatus.
+          description: User not found or bad userStatus.
 
 definitions:
   User:

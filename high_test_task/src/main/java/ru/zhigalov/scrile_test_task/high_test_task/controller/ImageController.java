@@ -30,7 +30,7 @@ public class ImageController implements ImageApi {
     public ResponseEntity<Resource> imageImageIdGet(String imageId) {
         var optionalImage = imageRepository.findById(imageId);
         if (optionalImage.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.badRequest().build();
 
         byte[] content = optionalImage.get().getImageBytes();
         return ResponseEntity.ok(new ByteArrayResource(content));
