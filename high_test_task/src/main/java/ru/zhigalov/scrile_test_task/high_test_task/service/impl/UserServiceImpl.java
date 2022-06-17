@@ -35,18 +35,22 @@ public class UserServiceImpl implements UserService {
         var userEntity = optionalUserEntity.get();
 
         var oldStatus = userEntity.getUserStatus();
-        var newStatus = request.getNewStatus();
 
-        userEntity.setUserStatus(newStatus);
+        userEntity.setUserStatus(request.getNewStatus());
+        userEntity = repository.save(userEntity);
 
         return new ChangeStatusResponse()
-                .id(request.getId())
-                .newStatus(newStatus)
+                .id(userEntity.getId())
+                .newStatus(userEntity.getUserStatus())
                 .oldStatus(oldStatus);
     }
 
     @Override
     public User createUser(User user) {
-        return null;
+        return mapper.userEntityToUser(
+                repository.save(
+                        mapper.userToUserEntity(user)
+                )
+        );
     }
 }
