@@ -89,6 +89,16 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <image>
+                        <name>docker.io/den4ick240/scrile_test_task</name>
+                    </image>
+                    <docker>
+                        <publishRegistry>
+                            <username>${docker-registry-username}</username>
+                            <password>${docker-registry-password}</password>
+                            <url>https://index.docker.io/v1</url>
+                        </publishRegistry>
+                    </docker>
                 </configuration>
             </plugin>
 

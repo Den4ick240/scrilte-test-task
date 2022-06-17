@@ -3,7 +3,6 @@ package ru.zhigalov.scrile_test_task.high_test_task.controller;
 
 import io.swagger.api.ImageApi;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -20,10 +19,7 @@ import java.io.IOException;
 @Controller
 public class ImageController implements ImageApi {
 
-    @Autowired
     private final Environment environment;
-
-    @Autowired
     private final ImageRepository imageRepository;
 
     @Override

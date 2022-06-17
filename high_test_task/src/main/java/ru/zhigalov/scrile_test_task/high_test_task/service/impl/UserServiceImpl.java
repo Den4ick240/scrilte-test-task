@@ -4,7 +4,6 @@ import io.swagger.model.ChangeStatusRequest;
 import io.swagger.model.ChangeStatusResponse;
 import io.swagger.model.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.zhigalov.scrile_test_task.high_test_task.mapper.UserMappper;
 import ru.zhigalov.scrile_test_task.high_test_task.repository.UserRepository;
